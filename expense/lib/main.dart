@@ -68,18 +68,18 @@ class ExpenseTrackerScreen extends StatelessWidget {
         slivers: [
           SliverAppBar(
             pinned: true,
-            expandedHeight: 200.0,
+            expandedHeight: 70.0,
             flexibleSpace: FlexibleSpaceBar(
               titlePadding: const EdgeInsets.symmetric(
                 horizontal: 16.0,
-                vertical: 10.0,
+                vertical: 5.0,
               ),
               title: const Text(
                 'Expense Tracker',
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
-                  fontSize: 18.0,
+                  fontSize: 24.0,
                 ),
               ),
               background: Container(

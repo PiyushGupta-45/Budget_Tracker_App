@@ -47,11 +47,13 @@ class StatsCards extends StatelessWidget {
           color: Colors.purple,
           iconBgColor: Colors.purple.shade100,
         ),
+        // 🎯 UPDATED CARD: Total Days Tracked
         _buildStatCard(
           context,
-          title: 'Categories Used',
-          value: '${analytics.categoryTotals.length}',
-          icon: Icons.pie_chart,
+          title: 'Total Days Tracked',
+          value:
+              '${analytics.dailySpending.keys.length}', // Uses the count of unique expense dates
+          icon: Icons.access_time_filled, // Icon for time/days
           color: Colors.orange,
           iconBgColor: Colors.orange.shade100,
         ),
