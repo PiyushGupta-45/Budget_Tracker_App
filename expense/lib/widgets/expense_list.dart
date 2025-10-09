@@ -5,7 +5,7 @@ import '../models/expense.dart';
 import '../models/category.dart';
 import '../services/expense_notifier.dart';
 
-// --- Add/Edit Expense Modal (Now uses Provider to submit data) ---
+// --- Add/Edit Expense Modal (Code unchanged from previous fix) ---
 class AddEditExpenseModal extends StatefulWidget {
   final List<Category> categories;
   final Expense? expenseToEdit;
@@ -84,7 +84,6 @@ class _AddEditExpenseModalState extends State<AddEditExpenseModal> {
 
   @override
   Widget build(BuildContext context) {
-    // 🎯 FIX: Get the height of the soft keyboard
     final double bottomPadding = MediaQuery.of(context).viewInsets.bottom;
 
     return Container(
@@ -92,10 +91,8 @@ class _AddEditExpenseModalState extends State<AddEditExpenseModal> {
         color: Colors.white,
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
-      // Use standard padding here, the extra space will be added below the form content
       padding: const EdgeInsets.only(top: 24.0, left: 24.0, right: 24.0),
       child: SingleChildScrollView(
-        // 🎯 FIX: Apply the calculated keyboard height to the bottom padding
         padding: EdgeInsets.only(bottom: 24.0 + bottomPadding),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -178,7 +175,7 @@ class _AddEditExpenseModalState extends State<AddEditExpenseModal> {
               ),
             ),
             const SizedBox(height: 24),
-            // Action Buttons (These buttons MUST be within the SingleChildScrollView to be scrolled)
+            // Action Buttons
             Row(
               children: [
                 Expanded(
@@ -243,7 +240,7 @@ class _AddEditExpenseModalState extends State<AddEditExpenseModal> {
   }
 }
 
-// --- Expense List View (Now reads state from Provider) ---
+// --- Expense List View ---
 class ExpenseListView extends StatelessWidget {
   const ExpenseListView({super.key});
 
@@ -267,7 +264,6 @@ class ExpenseListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // FIX: Only watch the filtered list; the widget rebuilds only when data or filters change.
     final filteredExpenses = context.select(
       (ExpenseNotifier n) => n.filteredExpenses,
     );
@@ -307,12 +303,14 @@ class ExpenseListView extends StatelessWidget {
           if (filteredExpenses.isEmpty)
             _buildEmptyState(context, () => _showAddEditForm(context, null))
           else
+            // REVERT: Bring back ConstrainedBox to give the list a fixed height for visual separation
             ConstrainedBox(
+              // Set a reasonable height (e.g., 600) to show many items before main screen scroll takes over
               constraints: const BoxConstraints(maxHeight: 400),
               child: ListView.builder(
                 shrinkWrap: true,
-                physics:
-                    const NeverScrollableScrollPhysics(), // Important for CustomScrollView nesting
+                // FIX: Give the list its own scroll physics to make it scrollable within its 600px container
+                physics: const BouncingScrollPhysics(),
                 itemCount: filteredExpenses.length,
                 itemBuilder: (context, index) {
                   final expense = filteredExpenses[index];
@@ -362,7 +360,7 @@ class ExpenseListView extends StatelessWidget {
   }
 }
 
-// --- Expense List Item (Now uses Provider for Delete) ---
+// --- Expense List Item ---
 class ExpenseListItem extends StatelessWidget {
   final Expense expense;
   final Category category;

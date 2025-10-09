@@ -340,8 +340,8 @@ class DailySpendingTrends extends StatelessWidget {
               constraints: const BoxConstraints(maxHeight: 320),
               child: ListView.builder(
                 shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: min(15, sortedDailySpending.length),
+                physics: const BouncingScrollPhysics(),
+                itemCount: sortedDailySpending.length,
                 itemBuilder: (context, index) {
                   final entry = sortedDailySpending[index];
                   return Padding(
